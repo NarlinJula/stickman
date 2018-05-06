@@ -7,7 +7,7 @@ class Game:
         self.tk =  Tk()
         self.tk.title("Человечек спешит к выходу")
         self.tk.resizable(0,0) #фиксированный размер окна
-        self.tk.wm_attributes("-topmost", 1) #пащмещаем окно поверх остальных окон
+        self.tk.wm_attributes("-topmost", 1) #помещаем окно поверх остальных окон
         self.canvas = Canvas(self.tk, width=500, height=500, highlightthickness=0) #создаем холст
         self.canvas.pack()
         self.tk.update()
@@ -83,7 +83,16 @@ def collided_bottom(y, co1, co2):
             return True
     return False
     
-    
+class Sprite:
+    def __init__(self, game):
+        self.game =  game
+        self.endgame = False
+        self.coordinates =  None 
+    def move(self):
+        pass
+    def coords(self):
+        return self.coordinates
+        
     
    
 g = Game()
