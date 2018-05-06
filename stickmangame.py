@@ -6,9 +6,9 @@ class Game:
     def __init__(self):
         self.tk =  Tk()
         self.tk.title("Человечек спешит к выходу")
-        self.tk.resizable(0,0)
-        self.tk.wm_attributes("-topmost", 1)
-        self.canvas = Canvas(self.tk, width=500, height=500, highlightthickness=0)
+        self.tk.resizable(0,0) #фиксированный размер окна
+        self.tk.wm_attributes("-topmost", 1) #пащмещаем окно поверх остальных окон
+        self.canvas = Canvas(self.tk, width=500, height=500, highlightthickness=0) #создаем холст
         self.canvas.pack()
         self.tk.update()
         self.canvas_height = 500
@@ -50,13 +50,13 @@ def within_x (co1, co2):
 def within_y (co1, co2):
     if (co1.y1 > co2.y1 and co1.y1 < co2.y2) \
         or (co1.y2 > co2.y1 and co1.y2 < co2.y2) \
-        or (co2.y1 > co1.y1 and co2.y1 < co1.y2) \ 
-        or (co2.y2 > co1.y1 and < co2.y2 < co1.y2):
+        or (co2.y1 > co1.y1 and co2.y1 < co1.y2) \
+        or (co2.y2 > co1.y1 and co2.y2 < co1.y2):
         return True
     else:
         return False
 
-def collided_left (co1, co2)
+def collided_left (co1, co2):
     if within_y(co1, co2):
         if co1.x1 <= co2.x2 and co1.x1 >= co2.x1:
             return True
