@@ -1,6 +1,7 @@
 from tkinter import *
 import random
 import time
+import coords_rectangle
 
 class Game:
     def __init__(self):
@@ -40,6 +41,13 @@ class Sprite:
         pass
     def coords(self):
         return self.coordinates
+
+class PlatformSprite(Sprite):
+    def __init__(self, game, photo_image, x, y, width, height):
+        Sprite.__init__(self, game)
+        self.photo_image = photo_image
+        self.image = game.canvas.create_image(x, y, image=self.photo_image, anchor='nw')
+        self.coordinates = coords_rectangle.Coords(x, y, x + width, y + height)
 
     
    
