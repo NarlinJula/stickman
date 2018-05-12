@@ -52,6 +52,8 @@ class PlatformSprite(Sprite):
     
    
 g = Game()
+platform1 = PlatformSprite(g, PhotoImage(file="platform1.gif"), 0, 480, 100, 10)
+g.sprites.append(platform1) # добавляем только что созданный спрайт platform1 в список спрайтов нашего объекта класса Game (g).
 g.mainloop()
 
 
