@@ -22,31 +22,37 @@ class Game:
         self.bg1 = [self.bg1_1, self.bg1_2]
         self.bg2 = [self.bg2_1, self.bg2_2]
 
-        random.shuffle(self.bg1)
-        random.shuffle(self.bg2)
-
-        self.bg1_r = self.bg1[0]
-        self.bg2_r = self.bg2[0]
-
-        w1 = self.bg1_r.width()
-        h1 = self.bg1_r.height()
-        w2 = self.bg2_r.width()
-        h2 = self.bg2_r.height()
 
         for x in range (0, 5, 2):
             for y in range (0, 5, 2):
+                random.shuffle(self.bg1)
+                self.bg1_r = self.bg1[0]
+                w1 = self.bg1_r.width()
+                h1 = self.bg1_r.height()
                 self.canvas.create_image(x * w1, y * h1, image=self.bg1_r, anchor='nw')
 
         for x in range (1, 5, 2):
             for y in range (1, 5, 2):
+                random.shuffle(self.bg1)
+                self.bg1_r = self.bg1[0]
+                w1 = self.bg1_r.width()
+                h1 = self.bg1_r.height()
                 self.canvas.create_image(x * w1, y * h1, image=self.bg1_r, anchor='nw')
-
+                
         for x in range (0, 5, 2):
             for y in range (1, 5, 2):
+                random.shuffle(self.bg2)
+                self.bg2_r = self.bg2[0]
+                w2 = self.bg2_r.width()
+                h2 = self.bg2_r.height()
                 self.canvas.create_image(x * w2, y * h2, image=self.bg2_r, anchor='nw')
 
         for x in range (1, 5, 2):
             for y in range (0, 5, 2):
+                random.shuffle(self.bg2)
+                self.bg2_r = self.bg2[0]
+                w2 = self.bg2_r.width()
+                h2 = self.bg2_r.height()
                 self.canvas.create_image(x * w2, y * h2, image=self.bg2_r, anchor='nw')
 
 
