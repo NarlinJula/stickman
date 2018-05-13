@@ -14,7 +14,7 @@ class Game:
         self.tk.update()
         self.canvas_height = 500
         self.canvas_width = 500
-        self.bg =  PhotoImage(file="background.gif")
+        self.bg =  PhotoImage(file="background1.gif")
         self.bg2 = PhotoImage(file="background2.gif")
 
         w = self.bg.width()
