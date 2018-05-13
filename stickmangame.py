@@ -14,29 +14,40 @@ class Game:
         self.tk.update()
         self.canvas_height = 500
         self.canvas_width = 500
-        self.bg =  PhotoImage(file="background1.gif")
-        self.bg2 = PhotoImage(file="background2.gif")
+        self.bg1_1 =  PhotoImage(file="background1.1.gif")
+        self.bg1_2 = PhotoImage(file="background1.2.gif")
+        self.bg2_1 = PhotoImage(file="background2.1.gif")
+        self.bg2_2 = PhotoImage(file="background2.2.gif")
 
-        w = self.bg.width()
-        h = self.bg.height()
-        w2 = self.bg2.width()
-        h2 = self.bg2.height()
+        self.bg1 = [self.bg1_1, self.bg1_2]
+        self.bg2 = [self.bg2_1, self.bg2_2]
+
+        random.shuffle(self.bg1)
+        random.shuffle(self.bg2)
+
+        self.bg1_r = self.bg1[0]
+        self.bg2_r = self.bg2[0]
+
+        w1 = self.bg1_r.width()
+        h1 = self.bg1_r.height()
+        w2 = self.bg2_r.width()
+        h2 = self.bg2_r.height()
 
         for x in range (0, 5, 2):
             for y in range (0, 5, 2):
-                self.canvas.create_image(x * w, y * h, image=self.bg, anchor='nw')
+                self.canvas.create_image(x * w1, y * h1, image=self.bg1_r, anchor='nw')
 
         for x in range (1, 5, 2):
             for y in range (1, 5, 2):
-                self.canvas.create_image(x * w, y * h, image=self.bg, anchor='nw')
+                self.canvas.create_image(x * w1, y * h1, image=self.bg1_r, anchor='nw')
 
         for x in range (0, 5, 2):
             for y in range (1, 5, 2):
-                self.canvas.create_image(x * w2, y * h2, image=self.bg2, anchor='nw')
+                self.canvas.create_image(x * w2, y * h2, image=self.bg2_r, anchor='nw')
 
         for x in range (1, 5, 2):
             for y in range (0, 5, 2):
-                self.canvas.create_image(x * w2, y * h2, image=self.bg2, anchor='nw')
+                self.canvas.create_image(x * w2, y * h2, image=self.bg2_r, anchor='nw')
 
 
 
