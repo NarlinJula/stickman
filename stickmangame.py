@@ -97,10 +97,10 @@ class StickFigureSprite(Sprite):
 
         self.x = -2
         self.y =  0
-        self.current_image = 0
-        self.current_image_add = 1
-        self.jump_count = 0
-        self.last_time = time.time()
+        self.current_image = 0        #   индекс текущего изображения 0, 1 и 2 для трех стадий бега человечка
+        self.current_image_add = 1     #  число которое  прибавить к индексу хранящемуся в свойстве current_image, чтобы получить индекс следующего изображения
+        self.jump_count = 0           # свойство - счетчик, который понадобится для прыжков человечка.
+        self.last_time = time.time()   #  будет хранить время последней смены кадров фигурки. сейчас записано текущее время с помощью функции time из модуля time.
         self.coordinates = coords_rectangle.Coords() 
 
         game.canvas.bind_all('<KeyPress-Left>', self.turn_left)
