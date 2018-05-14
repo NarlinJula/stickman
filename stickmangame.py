@@ -122,13 +122,26 @@ class StickFigureSprite(Sprite):
 
     def animate(self):
         if self.x != 0 and self.y == 0:
-            if time.time() - self.last_time > 0.1:    
-                self.last_time = time.time()
+            if time.time() - self.last_time > 0.1:    #проверка, сколько времени прошло с пред смены кадра, если нужное время прошло то
+                self.last_time = time.time()   #обнуляем счетчик -записывая текущее время
                 self.current_image += self.current_image_add
                 if self.current_image >=2:
                     self.current_image_add = -1
                 if self.current_image <=0:
                     self.current_image_add = 1
+
+        if self.x < 0:       #если фигурка движется в лево
+            if self.y != 0:     #прыгает или падает
+                self.game.canvas.itemconfig(self.image, image=self.images_left[2]) #с помощью функции itemconfig меняем изображение фигурки на последний кадр в списке изображений, повернутых влево (images_left[2]).
+            else:
+                self.game.canvas.itemconfig(self.image, image=self.image_left[self.current_image])
+            
+        elif self.x > 0:
+            if self.y != 0:
+                self.game.canvas.itemconfig(self.image, image=self.image_right[2])
+            else:
+                self.game.canvas.itemconfig(self.image, image=self.image_right[self.current_image])
+
 
 
 
