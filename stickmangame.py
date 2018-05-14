@@ -86,7 +86,15 @@ class PlatformSprite(Sprite):
         self.image = game.canvas.create_image(x, y, image=self.photo_image, anchor='nw')
         self.coordinates = coords_rectangle.Coords(x, y, x + width, y + height)
 
-    
+class StickFigureSprite(Sprite):
+    def __init__(self, game):
+        Sprite.__init__(self, game)
+
+        self.image_left = [PhotoImage(file="figure-L1.gif"), PhotoImage(file="figure-L2.gif"), PhotoImage(file="figure-L3.gif")]
+        self.image_right = [PhotoImage(file="figure-R1.gif"), PhotoImage(file="figure-R2.gif"), PhotoImage(file="figure-R3.gif")]
+
+        self.image = game.canvas.create_image(200, 470, image=self.image_left[0], anchor='nw')
+
    
 g = Game()
 platform1 = PlatformSprite(g, PhotoImage(file="platform1.gif"), 0, 480, 100, 10) #первая пара цифр отступы -расположение, вторая - ширина и высота картинки
