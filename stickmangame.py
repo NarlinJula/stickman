@@ -95,7 +95,36 @@ class StickFigureSprite(Sprite):
 
         self.image = game.canvas.create_image(200, 470, image=self.image_left[0], anchor='nw')
 
-   
+        self.x = -2
+        self.y =  0
+        self.current_image = 0
+        self.current_image_add = 1
+        self.jump_count = 0
+        self.last_time = time.time()
+        self.coordinates = coords_rectangle.Coords() 
+
+        game.canvas.bind_all('<KeyPress-Left>', self.turn_left)
+        game.canvas.bind_all('<KeyPress-Right>', self.turn_right)
+        game.canvas.bind_all('<space>', self.jump)
+
+    def turn_left(self, evt):
+        if self.y == 0:
+            self.x = -2
+    
+    def turn_right(self, evt):
+        if self.y == 0:
+            self.x = 2
+
+    def jump(self, evt):
+        if self.y == 0:
+            self.y = -4
+            self.jump_count = 0
+            
+
+
+
+
+
 g = Game()
 platform1 = PlatformSprite(g, PhotoImage(file="platform1.gif"), 0, 480, 100, 10) #первая пара цифр отступы -расположение, вторая - ширина и высота картинки
 platform2 = PlatformSprite(g, PhotoImage(file = "platform1.gif"), 150, 440, 110, 10) 
