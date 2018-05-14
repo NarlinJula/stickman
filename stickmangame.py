@@ -119,7 +119,16 @@ class StickFigureSprite(Sprite):
         if self.y == 0:
             self.y = -4
             self.jump_count = 0
-            
+
+    def animate(self):
+        if self.x != 0 and self.y == 0:
+            if time.time() - self.last_time > 0.1:    
+                self.last_time = time.time()
+                self.current_image += self.current_image_add
+                if self.current_image >=2:
+                    self.current_image_add = -1
+                if self.current_image <=0:
+                    self.current_image_add = 1
 
 
 
