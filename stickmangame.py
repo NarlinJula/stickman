@@ -142,6 +142,15 @@ class StickFigureSprite(Sprite):
             else:
                 self.game.canvas.itemconfig(self.image, image=self.image_right[self.current_image])
 
+    
+    def coords(self):
+        xy = self.game.canvas.coords(self.image) #возвращает x- и y-координаты изображения (идентификатор изображения хранится в свойстве image)
+        self.coordinates.x1 = xy[0]
+        self.coordinates.y1 = xy[1]
+        self.coordinates.x2 = xy[0] + 27
+        self.coordinates.y2 = xy[1] + 30
+        return self.coordinates
+
 
 
 
