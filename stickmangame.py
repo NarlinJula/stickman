@@ -86,7 +86,7 @@ class PlatformSprite(Sprite):
         self.image = game.canvas.create_image(x, y, image=self.photo_image, anchor='nw')
         self.coordinates = coords_rectangle.Coords(x, y, x + width, y + height)
 
-class StickFigureSprite(Sprite):
+class StickFigureSprite(Sprite):  #класс представляющий спрайт человечка
     def __init__(self, game):
         Sprite.__init__(self, game)
 
@@ -120,7 +120,7 @@ class StickFigureSprite(Sprite):
             self.y = -4
             self.jump_count = 0
 
-    def animate(self):
+    def animate(self):  # метод  - будет менять кадры анимации фигурки в зависимомти от того, куда она движется
         if self.x != 0 and self.y == 0:
             if time.time() - self.last_time > 0.1:    #проверка, сколько времени прошло с пред смены кадра, если нужное время прошло то
                 self.last_time = time.time()   #обнуляем счетчик -записывая текущее время
@@ -143,7 +143,9 @@ class StickFigureSprite(Sprite):
                 self.game.canvas.itemconfig(self.image, image=self.image_right[self.current_image])
 
     
-    def coords(self):
+
+    
+    def coords(self):    # метод -  получение позиции фигуры человечка
         xy = self.game.canvas.coords(self.image) #возвращает x- и y-координаты изображения (идентификатор изображения хранится в свойстве image)
         self.coordinates.x1 = xy[0]
         self.coordinates.y1 = xy[1]
