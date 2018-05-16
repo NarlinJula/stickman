@@ -132,7 +132,7 @@ class StickFigureSprite(Sprite):  #класс представляющий сп�
 
         if self.x < 0:       #если фигурка движется в лево
             if self.y != 0:     #прыгает или падает
-                self.game.canvas.itemconfig(self.image, image=self.images_left[2]) #с помощью функции itemconfig меняем изображение фигурки на последний кадр в списке изображений, повернутых влево (images_left[2]).
+                self.game.canvas.itemconfig(self.image, image=self.image_left[2]) #с помощью функции itemconfig меняем изображение фигурки на последний кадр в списке изображений, повернутых влево (images_left[2]).
             else:
                 self.game.canvas.itemconfig(self.image, image=self.image_left[self.current_image])
             
