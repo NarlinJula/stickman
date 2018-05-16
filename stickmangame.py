@@ -154,7 +154,64 @@ class StickFigureSprite(Sprite):  #класс представляющий сп�
         return self.coordinates
 
 
+    def move(self): # метод класса StickFigureSprite отвечает за перемещения чел. по холсту и обрабатывает столкновения чел.
+        self.animate()
+        if self.y < 0:
+            self.jump_count += 1
+            if self.jump_count > 20:
+                self.y = 4
+        if self.y > 0:
+            self.jump_count -= 1
+        co = self.coords()
+        left = True  #эта и 4 ниже переменные будут контролировать нужно ли проверять фигурку на столкновение и на падение
+        right =  True
+        top =  True
+        bottom = True
+        falling =  True
+        if self.y > 0 and co.y2 >= self.game.canvas_height:  #эта часть проверяет не столкнулась ли фигура с верхней или нижней границами холста
+            self.y = 0
+            bottom = False # для остальной части кода эта строка -признак, что проверять фигурку на столкновения с низу больше не надо
+        elif self.y < 0 and co.y1 <= 0:
+            self.y = 0
+            top = False
+        if self.x > 0 and co.x2 >= self.game.canvas_width:
+            self.x = 0
+            right =  False
+        elif self.x < 0 and co.x1 <= 0:
+            self.x = 0
+            left = False
 
+       #проверяем не столкнулась ли фигурка с другими игровыми объектами 
+        for sprite in self.game.sprites:
+            if sprite == self:
+                continue
+            sprite_co = sprite.coords()
+            #проверка на столкновение верхней стороной
+            if top and self.y < 0 and coords_rectangle.collided_top(co, sprite_co):
+                self.y = -self.y
+                top = False
+            #проверка на столкновение нижней стороной
+            if bottom and self.y > 0 and coords_rectangle.collided_bottom(self.y, co, sprite_co):
+                self.y = sprite_co.y1 - co.y2
+                if self.y < 0:
+                    self.y = 0
+                bottom =  False
+                top =  False
+            #проверка для ситуаций, когда фигурка находится на платформе и может выбежать за её край
+            if bottom and falling and self.y == 0 and co.y2 < self.game.canvas_height \
+            and coords_rectangle.collided_bottom(1, co, sprite_co):
+                falling = False
+            #проверка не столкнулась ли фигурка с чем-нибудь с лева или с права
+            if left and self.x < 0 and coords_rectangle.collided_left(co, sprite_co):
+                self.x = 0
+                left = False
+            if right and self.x > 0 and coords_rectangle.collided_right(co, sprite_co):
+                self.x = 0
+                right =  False
+
+        if falling and bottom and self.y == 0 and co.y2 < self.game.canvas_height:
+            self.y = 4
+        self.game.canvas.move(self.image, self.x, self.y)  # двигаем человечка по экрану в соответствии с текущими значениями свойств x и y 
 
 
 
