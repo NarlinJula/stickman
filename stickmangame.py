@@ -205,19 +205,33 @@ class StickFigureSprite(Sprite):  #класс представляющий сп�
             if left and self.x < 0 and coords_rectangle.collided_left(co, sprite_co):
                 self.x = 0
                 left = False
+
+                if sprite.endgame:  #для столкновений с дверью
+                    self.game.running = False #для столкновений с дверью
+
             if right and self.x > 0 and coords_rectangle.collided_right(co, sprite_co):
                 self.x = 0
                 right =  False
+
+                if sprite.endgame: #для столкновений с дверью
+                    self.game.running =  False #для столкновений с дверью
 
         if falling and bottom and self.y == 0 and co.y2 < self.game.canvas_height:
             self.y = 4
         self.game.canvas.move(self.image, self.x, self.y)  # двигаем человечка по экрану в соответствии с текущими значениями свойств x и y 
 
+class DoorSprite(Sprite):
+    def __init__(self, game, photo_image, x, y, width, height):
+        Sprite.__init__(self, game)
+        self.photo_image = photo_image
+        self.image = game.canvas.create_image(x, y, image=self.photo_image, anchor = 'nw')
+        self.coordinates = coords_rectangle.Coords(x, y, x + (width/2), y + height)
+        self.endgame =  True
 
 
 g = Game()
 platform1 = PlatformSprite(g, PhotoImage(file="platform1.gif"), 0, 480, 100, 10) #первая пара цифр отступы -расположение, вторая - ширина и высота картинки
-platform2 = PlatformSprite(g, PhotoImage(file = "platform1.gif"), 150, 440, 110, 10) 
+platform2 = PlatformSprite(g, PhotoImage(file ="platform1.gif"), 150, 440, 110, 10) 
 platform3 = PlatformSprite(g, PhotoImage(file="platform1.gif"), 300, 400, 100, 10)
 platform4 = PlatformSprite(g, PhotoImage(file="platform1.gif"), 300, 160, 100, 10)
 platform5 = PlatformSprite(g, PhotoImage(file="platform2.gif"), 175, 350, 66, 10)
@@ -237,6 +251,9 @@ g.sprites.append(platform7)
 g.sprites.append(platform8)
 g.sprites.append(platform9)
 g.sprites.append(platform10)
+
+door = DoorSprite(g, PhotoImage(file="door1.gif"), 45, 30, 40, 35)
+g.sprites.append(door)
 
 sf = StickFigureSprite(g)
 g.sprites.append(sf)
