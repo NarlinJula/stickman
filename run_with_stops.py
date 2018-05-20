@@ -95,6 +95,7 @@ class StickFigureSprite(Sprite):  #класс представляющий сп�
         self.current_image_add = 1     #  число которое  прибавить к индексу хранящемуся в свойстве current_image, чтобы получить индекс следующего изображения
         self.jump_count = 0           # свойство - счетчик, который понадобится для прыжков человечка.
         self.last_time = time.time()   #  будет хранить время последней смены кадров фигурки. сейчас записано текущее время с помощью функции time из модуля time.
+        self.move_count = 0
         self.coordinates = coords_rectangle.Coords() 
 
         game.canvas.bind_all('<KeyPress-Left>', self.turn_left)
@@ -104,14 +105,17 @@ class StickFigureSprite(Sprite):  #класс представляющий сп�
     def turn_left(self, evt):
         if self.speed_y == 0:
             self.speed_x = -2
+            self.move_count_left = 0
     
     def turn_right(self, evt):
         if self.speed_y == 0:
             self.speed_x = 2
+            self.move_count_right = 0
 
     def jump(self, evt):
         if self.speed_y == 0:
             self.speed_y = -4
+            
             self.jump_count = 0
 
     def animate(self):  # метод  - будет менять кадры анимации фигурки в зависимомти от того, куда она движется
@@ -156,6 +160,19 @@ class StickFigureSprite(Sprite):  #класс представляющий сп�
                 self.speed_y = 4
         if self.speed_y > 0:
             self.jump_count -= 1
+        
+        if self.speed_x < 0: 
+            self.move_count_left += 1
+            if self.move_count_left > 20:
+                self.speed_x = 0
+
+        if self.speed_x > 0:
+            self.move_count_right += 1
+            if self.move_count_right > 20:
+                self.speed_x = 0
+
+
+
         co = self.coords()
         left = True  #эта и 4 ниже переменные будут контролировать нужно ли проверять фигурку на столкновение и на падение
         right =  True
