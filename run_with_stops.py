@@ -117,9 +117,9 @@ class StickFigureSprite(Sprite):  #класс представляющий сп�
         if self.speed_y == 0:
             self.speed_y = -4
             self.jump_count = 0
-            if self.move_count_left > 0:
+            if self.move_count_left > 0 and self.move_count_left < 20 :
                 self.speed_x = -2
-            elif self.move_count_right > 0:
+            elif self.move_count_right > 0 and self.move_count_right < 20 :
                 self.speed_x = 2
 
             
