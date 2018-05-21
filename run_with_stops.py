@@ -125,7 +125,7 @@ class StickFigureSprite(Sprite):  #класс представляющий сп�
 
     def jump(self, evt):
         if self.speed_y == 0:
-            self.speed_y = -4
+            self.speed_y = -5
             self.jump_count = 0
             if self.move_count_left > 0 and self.move_count_left < 20 :
                 self.speed_x = -2
@@ -170,29 +170,8 @@ class StickFigureSprite(Sprite):  #класс представляющий сп�
 
     def move(self): # метод класса StickFigureSprite отвечает за перемещения чел. по холсту и обрабатывает столкновения чел.
         self.animate()
-        if self.speed_y < 0:
-            self.jump_count += 1
-            if self.jump_count > 17:
-                self.speed_y = -3
-                self.jump_count += 1
-            if self.jump_count > 18:
-                self.speed_y = -2
-                self.jump_count += 1
-            if self.jump_count > 19:
-                self.speed_y = - 1
-                self.jump_count += 1
-            if self.jump_count > 20:
-                self.speed_y = 1
-                self.jump_count += 1
-            if self.jump_count > 21:
-                self.speed_y = 2
-                self.jump_count +=1
-            if self.jump_count > 22:
-                self.speed_y = 3
-                self.jump_count +=1
-            if self.jump_count > 23:
-                self.speed_y = 4
-                self.jump_count +=1
+        self.speed_y = self.speed_y + 0.2
+            
 
     
         
