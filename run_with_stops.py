@@ -98,6 +98,8 @@ class StickFigureSprite(Sprite):  #класс представляющий сп�
       
         self.coordinates = coords_rectangle.Coords() 
 
+        
+
         game.canvas.bind_all('<KeyPress-Left>', self.turn_left)
         game.canvas.bind_all('<KeyPress-Right>', self.turn_right)
         game.canvas.bind_all('<space>', self.jump)
@@ -106,7 +108,7 @@ class StickFigureSprite(Sprite):  #класс представляющий сп�
 
     def turn_left(self, evt):
         if self.speed_y == 0:
-            self.speed_x = -2
+            self.speed_x =  - 2
             
     
     def turn_right(self, evt):
@@ -126,10 +128,7 @@ class StickFigureSprite(Sprite):  #класс представляющий сп�
         if self.speed_y == 0:
             self.speed_y = -5
             self.jump_count = 0
-            if self.move_count_left > 0 and self.move_count_left < 20 :
-                self.speed_x = -2
-            elif self.move_count_right > 0 and self.move_count_right < 20 :
-                self.speed_x = 2
+           
 
             
 
