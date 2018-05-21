@@ -95,33 +95,46 @@ class StickFigureSprite(Sprite):  #класс представляющий сп�
 
         self.image = game.canvas.create_image(200, 470, image=self.image_left[0], anchor='nw')
 
-        self.x = -2
-        self.y =  0
+        self.speed_x = 0
+        self.speed_y =  0
         self.current_image = 0        #   индекс текущего изображения 0, 1 и 2 для трех стадий бега человечка
         self.current_image_add = 1     #  число которое  прибавить к индексу хранящемуся в свойстве current_image, чтобы получить индекс следующего изображения
-        self.jump_count = 0           # свойство - счетчик, который понадобится для прыжков человечка.
+             
         self.last_time = time.time()   #  будет хранить время последней смены кадров фигурки. сейчас записано текущее время с помощью функции time из модуля time.
         self.coordinates = coords_rectangle.Coords() 
 
         game.canvas.bind_all('<KeyPress-Left>', self.turn_left)
         game.canvas.bind_all('<KeyPress-Right>', self.turn_right)
         game.canvas.bind_all('<space>', self.jump)
+        game.canvas.bind_all ('<KeyRelease-Left>', self.stop_left)
+        game.canvas.bind_all('<KeyRelease-Right>', self.stop_right)
 
     def turn_left(self, evt):
-        if self.y == 0:
-            self.x = -2
+        if self.speed_y == 0:
+            self.speed_x =  - 2
+            
     
     def turn_right(self, evt):
-        if self.y == 0:
-            self.x = 2
+        if self.speed_y == 0:
+            self.speed_x = 2
+            
+
+    def stop_left(self, evt):
+        if self.speed_y == 0:
+            self.speed_x = 0
+
+    def stop_right(self, evt):
+        if self.speed_y == 0:
+            self.speed_x = 0      
 
     def jump(self, evt):
-        if self.y == 0:
-            self.y = -4
+        if self.speed_y == 0:
+            self.speed_y = -5
             self.jump_count = 0
+           
 
     def animate(self):  # метод  - будет менять кадры анимации фигурки в зависимомти от того, куда она движется
-        if self.x != 0 and self.y == 0:
+        if self.speed_x != 0 and self.speed_y == 0:
             if time.time() - self.last_time > 0.1:    #проверка, сколько времени прошло с пред смены кадра, если нужное время прошло то
                 self.last_time = time.time()   #обнуляем счетчик -записывая текущее время
                 self.current_image += self.current_image_add
@@ -130,14 +143,14 @@ class StickFigureSprite(Sprite):  #класс представляющий сп�
                 if self.current_image <=0:
                     self.current_image_add = 1
 
-        if self.x < 0:       #если фигурка движется в лево
-            if self.y != 0:     #прыгает или падает
+        if self.speed_x < 0:       #если фигурка движется в лево
+            if self.speed_y != 0:     #прыгает или падает
                 self.game.canvas.itemconfig(self.image, image=self.image_left[2]) #с помощью функции itemconfig меняем изображение фигурки на последний кадр в списке изображений, повернутых влево (images_left[2]).
             else:
                 self.game.canvas.itemconfig(self.image, image=self.image_left[self.current_image])
             
-        elif self.x > 0:
-            if self.y != 0:
+        elif self.speed_x > 0:
+            if self.speed_y != 0:
                 self.game.canvas.itemconfig(self.image, image=self.image_right[2])
             else:
                 self.game.canvas.itemconfig(self.image, image=self.image_right[self.current_image])
@@ -156,29 +169,25 @@ class StickFigureSprite(Sprite):  #класс представляющий сп�
 
     def move(self): # метод класса StickFigureSprite отвечает за перемещения чел. по холсту и обрабатывает столкновения чел.
         self.animate()
-        if self.y < 0:
-            self.jump_count += 1
-            if self.jump_count > 20:
-                self.y = 4
-        if self.y > 0:
-            self.jump_count -= 1
+        self.speed_y = self.speed_y + 0.2
+
         co = self.coords()
         left = True  #эта и 4 ниже переменные будут контролировать нужно ли проверять фигурку на столкновение и на падение
         right =  True
         top =  True
         bottom = True
         falling =  True
-        if self.y > 0 and co.y2 >= self.game.canvas_height:  #эта часть проверяет не столкнулась ли фигура с верхней или нижней границами холста
-            self.y = 0
+        if self.speed_y > 0 and co.y2 >= self.game.canvas_height:  #эта часть проверяет не столкнулась ли фигура с верхней или нижней границами холста
+            self.speed_y = 0
             bottom = False # для остальной части кода эта строка -признак, что проверять фигурку на столкновения с низу больше не надо
-        elif self.y < 0 and co.y1 <= 0:
-            self.y = 0
+        elif self.speed_y < 0 and co.y1 <= 0:
+            self.speed_y = 0
             top = False
-        if self.x > 0 and co.x2 >= self.game.canvas_width:
-            self.x = 0
+        if self.speed_x > 0 and co.x2 >= self.game.canvas_width:
+            self.speed_x = 0
             right =  False
-        elif self.x < 0 and co.x1 <= 0:
-            self.x = 0
+        elif self.speed_x < 0 and co.x1 <= 0:
+            self.speed_x = 0
             left = False
 
        #проверяем не столкнулась ли фигурка с другими игровыми объектами 
@@ -187,38 +196,38 @@ class StickFigureSprite(Sprite):  #класс представляющий сп�
                 continue
             sprite_co = sprite.coords()
             #проверка на столкновение верхней стороной
-            if top and self.y < 0 and coords_rectangle.collided_top(co, sprite_co):
-                self.y = -self.y
+            if top and self.speed_y < 0 and coords_rectangle.collided_top(co, sprite_co):
+                self.speed_y = -self.speed_y
                 top = False
             #проверка на столкновение нижней стороной
-            if bottom and self.y > 0 and coords_rectangle.collided_bottom(self.y, co, sprite_co):
-                self.y = sprite_co.y1 - co.y2
-                if self.y < 0:
-                    self.y = 0
+            if bottom and self.speed_y > 0 and coords_rectangle.collided_bottom(self.speed_y, co, sprite_co):
+                self.speed_y = sprite_co.y1 - co.y2
+                if self.speed_y < 0:
+                    self.speed_y = 0
                 bottom =  False
                 top =  False
             #проверка для ситуаций, когда фигурка находится на платформе и может выбежать за её край
-            if bottom and falling and self.y == 0 and co.y2 < self.game.canvas_height \
+            if bottom and falling and self.speed_y == 0 and co.y2 < self.game.canvas_height \
             and coords_rectangle.collided_bottom(1, co, sprite_co):
                 falling = False
             #проверка не столкнулась ли фигурка с чем-нибудь с лева или с права
-            if left and self.x < 0 and coords_rectangle.collided_left(co, sprite_co):
-                self.x = 0
+            if left and self.speed_x < 0 and coords_rectangle.collided_left(co, sprite_co):
+                self.speed_x = 0
                 left = False
 
                 if sprite.endgame:  #для столкновений с дверью
                     self.game.running = False #для столкновений с дверью
 
-            if right and self.x > 0 and coords_rectangle.collided_right(co, sprite_co):
-                self.x = 0
+            if right and self.speed_x > 0 and coords_rectangle.collided_right(co, sprite_co):
+                self.speed_x = 0
                 right =  False
 
                 if sprite.endgame: #для столкновений с дверью
                     self.game.running =  False #для столкновений с дверью
 
-        if falling and bottom and self.y == 0 and co.y2 < self.game.canvas_height:
-            self.y = 4
-        self.game.canvas.move(self.image, self.x, self.y)  # двигаем человечка по экрану в соответствии с текущими значениями свойств x и y 
+        if falling and bottom and self.speed_y == 0 and co.y2 < self.game.canvas_height:
+            self.speed_y = 4
+        self.game.canvas.move(self.image, self.speed_x, self.speed_y)  # двигаем человечка по экрану в соответствии с текущими значениями свойств x и y 
 
 class DoorSprite(Sprite):
     def __init__(self, game, photo_image, x, y, width, height):
