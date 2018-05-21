@@ -102,6 +102,8 @@ class StickFigureSprite(Sprite):  #класс представляющий сп�
         game.canvas.bind_all('<KeyPress-Left>', self.turn_left)
         game.canvas.bind_all('<KeyPress-Right>', self.turn_right)
         game.canvas.bind_all('<space>', self.jump)
+        game.canvas.bind_all ('<KeyRelease-Left>', self.stop_left)
+        game.canvas.bind_all('<KeyRelease-Right>', self.stop_right)
 
     def turn_left(self, evt):
         if self.speed_y == 0:
@@ -112,6 +114,14 @@ class StickFigureSprite(Sprite):  #класс представляющий сп�
         if self.speed_y == 0:
             self.speed_x = 2
             self.move_count_right = 0
+
+    def stop_left(self, evt):
+        if self.speed_y == 0:
+            self.speed_x = 0
+
+    def stop_right(self, evt):
+        if self.speed_y == 0:
+            self.speed_x = 0      
 
     def jump(self, evt):
         if self.speed_y == 0:
@@ -162,20 +172,39 @@ class StickFigureSprite(Sprite):  #класс представляющий сп�
         self.animate()
         if self.speed_y < 0:
             self.jump_count += 1
+            if self.jump_count > 17:
+                self.speed_y = -3
+                self.jump_count += 1
+            if self.jump_count > 18:
+                self.speed_y = -2
+                self.jump_count += 1
+            if self.jump_count > 19:
+                self.speed_y = - 1
+                self.jump_count += 1
             if self.jump_count > 20:
+                self.speed_y = 1
+                self.jump_count += 1
+            if self.jump_count > 21:
+                self.speed_y = 2
+                self.jump_count +=1
+            if self.jump_count > 22:
+                self.speed_y = 3
+                self.jump_count +=1
+            if self.jump_count > 23:
                 self.speed_y = 4
-        if self.speed_y > 0:
-            self.jump_count -= 1
-        
-        if self.speed_x < 0 and self.speed_y == 0: 
-            self.move_count_left += 1
-            if self.move_count_left > 20:
-                self.speed_x = 0
+                self.jump_count +=1
 
-        if self.speed_x > 0 and self.speed_y == 0:
-            self.move_count_right += 1
-            if self.move_count_right > 20:
-                self.speed_x = 0
+    
+        
+       # if self.speed_x < 0 and self.speed_y == 0: 
+        #    self.move_count_left += 1
+         #   if self.move_count_left > 20:
+          #      self.speed_x = 0
+
+        #if self.speed_x > 0 and self.speed_y == 0:
+         #   self.move_count_right += 1
+          #  if self.move_count_right > 20:
+           #     self.speed_x = 0
 
 
 
