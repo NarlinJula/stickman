@@ -97,8 +97,8 @@ class StickFigureSprite(Sprite):  #класс представляющий сп�
 
         self.speed_x = 0
         self.speed_y =  0
-        self.motion_detect_left = None
-        self.motion_detect_right = None
+        self.motion_detect_left = False
+        self.motion_detect_right = False
         self.current_image = 0        #   индекс текущего изображения 0, 1 и 2 для трех стадий бега человечка
         self.current_image_add = 1     #  число которое  прибавить к индексу хранящемуся в свойстве current_image, чтобы получить индекс следующего изображения
              
@@ -112,35 +112,53 @@ class StickFigureSprite(Sprite):  #класс представляющий сп�
         game.canvas.bind_all('<KeyRelease-Right>', self.stop_right)
 
     def turn_left(self, evt):
-        if self.speed_y == 0:
+        #if self.speed_y == 0:
             #self.speed_x =  - 2
-            self.motion_detect_left = True
+        self.motion_detect_left = True
             
     
     def turn_right(self, evt):
-        if self.speed_y == 0:
+        #if self.speed_y == 0:
             #self.speed_x = 2
-            self.motion_detect_right = True
+        self.motion_detect_right = True
             
 
     def stop_left(self, evt):
-        if self.speed_y == 0:
+        #if self.speed_y == 0:
             #self.speed_x = 0
-            self.motion_detect_left = False
+        self.motion_detect_left = False
 
     def stop_right(self, evt):
-        if self.speed_y == 0:
+        #if self.speed_y == 0:
             #self.speed_x = 0      
-            self.motion_detect_right =  False
+        self.motion_detect_right =  False
 
     def jump(self, evt):
         if self.speed_y == 0:
             self.speed_y = -5
-            self.jump_count = 0
+           # self.jump_count = 0
            
 
     def animate(self):  # метод  - будет менять кадры анимации фигурки в зависимомти от того, куда она движется
         #if self.speed_x != 0 and self.speed_y == 0:
+        if self.motion_detect_left == True:
+            if self.motion_detect_right == False:
+                self.speed_x = -2
+            else:
+                self.speed_x = 0
+        
+        if self.motion_detect_right == True:
+            if self.motion_detect_left == False:
+                self.speed_x = 2
+            else:
+                self.speed_x = 0
+    
+        if self.motion_detect_left == False and self.motion_detect_right == False:
+            self.speed_x = 0
+
+
+
+
         if self.motion_detect_left == True or self.motion_detect_right == True and self.speed_y == 0:
             if time.time() - self.last_time > 0.1:    #проверка, сколько времени прошло с пред смены кадра, если нужное время прошло то
                 self.last_time = time.time()   #обнуляем счетчик -записывая текущее время
@@ -150,15 +168,15 @@ class StickFigureSprite(Sprite):  #класс представляющий сп�
                 if self.current_image <=0:
                     self.current_image_add = 1
 
-        #if self.speed_x < 0:       #если фигурка движется в лево
-        if self.motion_detect_left == True:
+        if self.speed_x < 0:       #если фигурка движется в лево
+        #if self.motion_detect_left == True:
             if self.speed_y != 0:     #прыгает или падает
                 self.game.canvas.itemconfig(self.image, image=self.image_left[2]) #с помощью функции itemconfig меняем изображение фигурки на последний кадр в списке изображений, повернутых влево (images_left[2]).
             else:
                 self.game.canvas.itemconfig(self.image, image=self.image_left[self.current_image])
             
-        #elif self.speed_x > 0:
-        elif self.motion_detect_right == True:
+        elif self.speed_x > 0:
+        #elif self.motion_detect_right == True:
             if self.speed_y != 0:
                 self.game.canvas.itemconfig(self.image, image=self.image_right[2])
             else:
@@ -179,26 +197,8 @@ class StickFigureSprite(Sprite):  #класс представляющий сп�
     def move(self): # метод класса StickFigureSprite отвечает за перемещения чел. по холсту и обрабатывает столкновения чел.
         self.animate()
         self.speed_y = self.speed_y + 0.2
-
-        if self.motion_detect_left == True:
-            if self.motion_detect_right == False:
-                self.speed_x = -2
-            else:
-                self.speed_x = 0
-        
-        if self.motion_detect_right == True:
-            if self.motion_detect_left == False:
-                self.speed_x = 2
-            else:
-                self.speed_x = 0
-    
-        if self.motion_detect_left == False and self.motion_detect_right == False:
-            self.speed_x = 0
-
         
         
-            
-
         co = self.coords()
         left = True  #эта и 4 ниже переменные будут контролировать нужно ли проверять фигурку на столкновение и на падение
         right =  True
