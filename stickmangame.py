@@ -65,9 +65,19 @@ class Game:
             if self.running == True:
                 for sprite in self.sprites:
                     sprite.move()
-            self.tk.update_idletasks()
-            self.tk.update()
-            time.sleep(0.01)
+                self.tk.update_idletasks()
+                self.tk.update()
+                time.sleep(0.01)
+            else:
+                time.sleep(0.1)
+                game_over = self.canvas.create_text(250, 230, text='ВЫ ВЫИГРАЛИ!',fill= 'blue', font =('Helvetica',30))
+                self.tk.update_idletasks()
+                self.tk.update()
+                time.sleep(0.5)
+
+            
+
+
 
 class Sprite:
     def __init__(self, game):
